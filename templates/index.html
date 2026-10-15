@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dealer Motor Nusantara | Katalog Motor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="hero">
+  <div class="nav"><span class="brand">🏍️ Dealer Motor Nusantara</span><span class="tag">Pilih motor sesuai kebutuhan</span></div>
+  <div class="hero-copy">
+    <p class="eyebrow">DEALER SEPEDA MOTOR</p>
+    <h1>Temukan motor untuk perjalananmu.</h1>
+    <p>Dealer motor fiktif yang menampilkan pilihan sepeda motor dan harga estimasi untuk kebutuhan harian maupun perjalanan.</p>
+    <a class="cta" href="#menu">Lihat katalog</a>
+  </div>
+</header>
+<main>
+  <section id="menu" class="section">
+    <p class="eyebrow">KATALOG MOTOR</p><h2>Pilihan motor dan harga estimasi</h2>
+    <div class="products">
+      {% for product in products %}
+      <article class="product">
+        <div class="product-icon">🏍️</div>
+        <h3>{{ product.name }}</h3><p>{{ product.description }}</p>
+        <strong>Rp{{ "{:,.0f}".format(product.price).replace(",", ".") }}</strong>
+      </article>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="order-section">
+    <div><p class="eyebrow">PERMINTAAN INFORMASI</p><h2>Tanyakan ketersediaan motor</h2><p>Formulir ini menyimpan permintaan informasi motor contoh ke database SQLite pada server.</p></div>
+    <form method="post" action="/order">
+      <label>Nama calon pembeli<input name="customer_name" required maxlength="100" placeholder="Masukkan nama"></label>
+      <label>Pilih motor<select name="product_name" required>{% for product in products %}<option value="{{ product.name }}">{{ product.name }}</option>{% endfor %}</select></label>
+      <label>Jumlah<input name="quantity" type="number" min="1" max="99" value="1" required></label>
+      <button type="submit">Kirim permintaan</button>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<p class="message {{ category }}">{{ message }}</p>{% endfor %}{% endif %}{% endwith %}
+    </form>
+  </section>
+</main>
+<footer>
+  <p><strong>Kedai Senja</strong> · Contoh dealer motor untuk praktikum Cloud Computing</p>
+  <p>Kelompok [NOMOR KELOMPOK] · [NAMA ANGGOTA 1] · [NAMA ANGGOTA 2] · [NAMA ANGGOTA 3] · [NAMA ANGGOTA 4]</p>
+  <p>Endpoint pemeriksaan: <code>/health</code></p>
+</footer>
+</body>
+</html>
